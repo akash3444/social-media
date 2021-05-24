@@ -11,14 +11,9 @@ export const Profile = ({ location }) => {
 	const { data, error, loading } = useQuery(GET_USER, {
 		variables: { token: user?.token, username: location.pathname.slice(1) },
 	});
-	const {
-		username,
-		displayName,
-		followerCount,
-		followingCount,
-		posts,
-		followers,
-	} = data ? data.user.user : {};
+	const { username, followerCount, followingCount, posts } = data
+		? data.user.user
+		: {};
 	if (loading)
 		return (
 			<div className='pt-14 flex-1 max-w-xl flex justify-center'>

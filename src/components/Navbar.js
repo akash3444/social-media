@@ -3,9 +3,7 @@ import {
 	AiOutlineHome,
 	AiFillHome,
 	AiOutlineMessage,
-	AiFillMessage,
 	AiOutlineHeart,
-	AiFillHeart,
 	AiOutlinePlusCircle,
 } from "react-icons/ai";
 import { IoSearchOutline } from "react-icons/io5";

@@ -11,12 +11,8 @@ export const Post = ({ post }) => {
 	const [isLiked, setIsLiked] = useState(post.isLiked);
 	const [likes, setLikes] = useState(post.likesCount);
 	const { user } = useContext(UserContext);
-	const [likePost, { data: likedData, error: likedError }] = useMutation(
-		LIKE_POST
-	);
-	const [unlikePost, { data: unlikedData, error: unlikedError }] = useMutation(
-		UNLIKE_POST
-	);
+	const [likePost] = useMutation(LIKE_POST);
+	const [unlikePost] = useMutation(UNLIKE_POST);
 	const mutationVariables = {
 		variables: {
 			token: user?.token,
