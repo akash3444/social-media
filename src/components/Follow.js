@@ -3,7 +3,7 @@ import React from "react";
 import { FOLLOW, UNFOLLOW } from "../queries";
 
 export const Follow = ({ isFollowing, token, username, GET_USER, data }) => {
-	const [followUser] = useMutation(FOLLOW, {
+	const [followUser, { loading:followingUser }] = useMutation(FOLLOW, {
 		refetchQueries: [
 			{
 				query: GET_USER,
@@ -11,10 +11,7 @@ export const Follow = ({ isFollowing, token, username, GET_USER, data }) => {
 			},
 		],
 	});
-	const [
-		unfollowUser,
-		{ loading: unfollowingUser, error: unfollowError },
-	] = useMutation(UNFOLLOW, {
+	const [unfollowUser, { loading: unfollowingUser }] = useMutation(UNFOLLOW, {
 		refetchQueries: [
 			{
 				query: GET_USER,
