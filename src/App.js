@@ -2,7 +2,6 @@ import { createContext, useEffect, useState } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { PostList } from "./components/PostList";
 import { Login } from "./components/Login";
-import "./styles.css";
 import { Profile } from "./components/Profile";
 import { Layout } from "./components/Layout";
 
