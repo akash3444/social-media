@@ -12,12 +12,12 @@ const client = new ApolloClient({ uri, cache });
 
 const rootElement = document.getElementById("root");
 ReactDOM.render(
-  <StrictMode>
-    <BrowserRouter>
-      <ApolloProvider client={client}>
-        <App />
-      </ApolloProvider>
-    </BrowserRouter>
-  </StrictMode>,
-  rootElement
+	<StrictMode>
+		<BrowserRouter>
+			<ApolloProvider client={client}>
+				<App />
+			</ApolloProvider>
+		</BrowserRouter>
+	</StrictMode>,
+	rootElement
 );

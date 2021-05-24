@@ -1,27 +1,8 @@
 import React, { useState } from "react";
-import { gql, useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-
-const REGISTER_USER = gql`
-  mutation RegisterUser(
-    $username: String!
-    $email: String!
-    $password: String!
-  ) {
-    addUser(username: $username, email: $email, password: $password) {
-      error {
-        message
-      }
-      user {
-        id
-        username
-        email
-        password
-      }
-    }
-  }
-`;
+import { Button } from "../ui/Button";
 
 export const Register = () => {
   const [userData, setUserData] = useState({
@@ -117,12 +98,9 @@ export const Register = () => {
             <p className="text-gray-700 text-center mb-3">
               Already have an account?
             </p>
-            <button
-              type="button"
-              className="bg-red-500 w-full py-3 text-gray-50 rounded transition duration-300 ring-0 focus:ring-4 ring-red-300 focus:outline-none uppercase text-sm tracking-wider"
-            >
+            <Button type="button">
               <Link to="/login"> Log In </Link>
-            </button>
+            </Button>
           </div>
         </form>
       </div>

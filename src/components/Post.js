@@ -1,82 +1,87 @@
-import React from "react";
-import { BsHeart, BsChat, BsBookmark } from "react-icons/bs";
-import { RiShareCircleFill } from "react-icons/ri";
-import { MdMoreHoriz } from "react-icons/md";
-import { Img } from "./Img";
+import React, { useContext, useState } from "react";
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import { BsChat, BsBookmark, BsHeart, BsHeartFill } from "react-icons/bs";
+import { IoShareSocialOutline } from "react-icons/io5";
+import { Link } from "react-router-dom";
+import { LIKE_POST, UNLIKE_POST } from "../queries";
+import { UserContext } from "../App";
+import { useMutation } from "@apollo/client";
 
-export const Post = ({ post, loading }) => {
-  console.log("my post", post);
-  return (
-    <div
-      style={{ breakInside: "avoid" }}
-      className="post bg-white mx-auto mt-0 border max-w-sm rounded-xl"
-    >
-      {/* Header */}
-      <div className="flex h-16 items-center px-6 justify-between">
-        <div className="flex items-center space-x-5">
-          <div className="h-10 w-10 rounded-full bg-gray-400 overflow-hidden">
-            <img
-              src="https://picsum.photos/200/200"
-              alt="Avatar"
-              className="object-contain"
-            />
-          </div>
-          <div>
-            <h4 className="font-bold text-gray-900">
-              {loading ? (
-                <div className="w-32 h-4 bg-gray-400"></div>
-              ) : (
-                post?.author?.username
-              )}
-            </h4>
-            <h5 className="text-sm mt-1">
-              {loading ? (
-                <div className="w-20 h-4 bg-gray-400"></div>
-              ) : (
-                post?.author?.displayName
-              )}
-            </h5>
-          </div>
-        </div>
-        <MdMoreHoriz size="25" className="text-gray-500" />
-      </div>
+export const Post = ({ post }) => {
+	const [isLiked, setIsLiked] = useState(post.isLiked);
+	const [likes, setLikes] = useState(post.likesCount);
+	const { user } = useContext(UserContext);
+	const [likePost, { data: likedData, error: likedError }] = useMutation(
+		LIKE_POST
+	);
+	const [unlikePost, { data: unlikedData, error: unlikedError }] = useMutation(
+		UNLIKE_POST
+	);
+	const mutationVariables = {
+		variables: {
+			token: user?.token,
+			postId: post.id,
+		},
+	};
+	const handleLike = () => {
+		isLiked ? unlikePost(mutationVariables) : likePost(mutationVariables);
+		setLikes((currLikes) => (isLiked ? --currLikes : ++currLikes));
+		setIsLiked((curr) => !curr);
+	};
 
-      {/* Body */}
-      <div>
-        <Img src={post.image} alt={post.capion} />
-      </div>
+	return (
+		<div className='w-full bg-white border max-w-xl mx-auto'>
+			{/* Post Header */}
+			<div className='flex items-center justify-between px-5 py-3 sm:bg-white border'>
+				<div className='flex items-center space-x-3'>
+					<img
+						src='https://picsum.photos/100/100'
+						alt='Avatar'
+						className='h-10 w-10 rounded-full'
+					/>
+					<h5 className='font-medium hover:underline cursor-pointer'>
+						<Link to={`/${post.author.username}`}>{post.author.username}</Link>
+					</h5>
+				</div>
 
-      {/* Footer */}
-      <div className="px-6 py-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3 h-10">
-            <BsHeart size={25} className="text-gray-400" />
-            <BsChat
-              size={25}
-              className="z-0 text-gray-400 relative bottom-0.5"
-            />
-            <RiShareCircleFill size={25} className="text-gray-400" />
-          </div>
-          <BsBookmark size={25} className="text-gray-400" />
-        </div>
+				<HiOutlineDotsHorizontal size={25} />
+			</div>
 
-        <div className="">
-          <h5 className="font-semibold">
-            {loading ? (
-              <div className="w-full h-4 bg-gray-400"></div>
-            ) : (
-              post.caption
-            )}
-          </h5>
-          <p className="text-sm text-gray-500 mt-1">
-            {loading ? (
-              <div className="w-32 h-4 bg-gray-400"></div>
-            ) : (
-              "Wed, 21 April 2021"
-            )}
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+			{/* Post Img */}
+			<div className='w-full'>
+				<img src={post.image} alt='Post' className='bg-cover w-full h-auto' />
+			</div>
+
+			{/* Post Footer */}
+			<div className='px-5 py-2 space-y-2'>
+				<div className='flex items-center justify-between text-gray-700'>
+					<div className='flex space-x-4'>
+						<div
+							className='cursor-pointer relative top-0.5'
+							onClick={handleLike}>
+							{isLiked ? (
+								<BsHeartFill size={25} className='text-red-500' />
+							) : (
+								<BsHeart size={25} />
+							)}
+						</div>
+						<BsChat size={25} />
+						<IoShareSocialOutline size={25} />
+					</div>
+					<BsBookmark size={25} />
+				</div>
+
+				{/* Likes */}
+				<p className='text-left text-sm font-bold'>
+					{likes} {likes !== 1 ? "likes" : "like"}
+				</p>
+
+				{/* Caption */}
+				<p className='text-sm text-left space-x-2'>
+					<b>{post.author.username}</b>
+					<span>{post.caption}</span>
+				</p>
+			</div>
+		</div>
+	);
 };

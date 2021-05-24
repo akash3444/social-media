@@ -1,27 +1,28 @@
 import React, { useEffect, useState } from "react";
-import { Login } from "./Login";
 import { Navbar } from "./Navbar";
 import { Sidebar } from "./Sidebar";
+import { Login } from "./Login";
+import { useLocation } from "react-router-dom";
 
 export const Layout = ({ children }) => {
-  const authToken = JSON.parse(localStorage.getItem("x-auth-token"));
+  const authToken = localStorage.getItem("x-auth-token");
   const [token, setToken] = useState(authToken);
   useEffect(() => {
-    console.log(authToken)
     setToken(authToken);
   }, [authToken]);
+  const location = useLocation();
   return (
     <>
-      {!token || token !== "" || token === "undefined" ? (
+      {!token || token === "undefined" ? (
         <Login />
       ) : (
-        <div className="lg:flex bg-gray-100 relative">
-          <div>
-            <Navbar />
+        <>
+          <Navbar />
+          <main className="lg:flex justify-center lg:space-x-10">
             {children}
-          </div>
-          <Sidebar />
-        </div>
+            {location.pathname === "/" && <Sidebar />}
+          </main>
+        </>
       )}
     </>
   );
