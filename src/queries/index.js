@@ -113,3 +113,11 @@ export const UNLIKE_POST = gql`
 		unlikePost(token: $token, postId: $postId)
 	}
 `;
+
+export const GET_POST_LIKES = gql`
+	query getPostLikes($token: String!, $id: String!){
+		post(token: $token, id: $id) {
+			likesCount
+		}
+	}
+`

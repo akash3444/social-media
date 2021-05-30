@@ -1,15 +1,15 @@
+import React from "react";
 import { useQuery } from "@apollo/client";
-import React, { useContext } from "react";
-import { UserContext } from "../App";
 import { ProfilePost } from "./ProfilePost";
 import { Follow } from "./Follow";
 import { GET_USER } from "../queries";
 import { Spinner } from "../ui/Spinner";
+import { useUserData } from "../hooks/useUserData";
 
 export const Profile = ({ location }) => {
-	const { user } = useContext(UserContext);
+	const {token, username:loggedinUser} = useUserData();
 	const { data, error, loading } = useQuery(GET_USER, {
-		variables: { token: user?.token, username: location.pathname.slice(1) },
+		variables: { token, username: location.pathname.slice(1) },
 	});
 	const { username, followerCount, followingCount, posts } = data
 		? data.user.user
@@ -50,13 +50,14 @@ export const Profile = ({ location }) => {
 								/>
 							</svg>
 						</div>
-						<Follow
+						{loggedinUser !== location.pathname.slice(1) && <Follow
 							isFollowing={data.user.isFollowing}
-							token={user?.token}
+							token={token}
 							username={username}
 							GET_USER={GET_USER}
 							data={data}
-						/>
+							loadingUser={loading}
+						/>}
 					</div>
 				</div>
 				{/* Statistics */}

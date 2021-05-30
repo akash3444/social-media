@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
-import { UserContext } from "../App";
+import React from "react";
+import { useUserData } from "../hooks/useUserData";
 
 export const Sidebar = () => {
-	const { user } = useContext(UserContext);
+	const { username } = useUserData();
 
 	return (
 		<aside
@@ -12,7 +12,7 @@ export const Sidebar = () => {
 			<div className='flex items-center space-x-5'>
 				<div className='h-16 w-16 bg-gray-300 rounded-full'></div>
 				<div>
-					<h5 className='font-bold text-left'>{user.user.username}</h5>
+					<h5 className='font-bold text-left'>{username}</h5>
 					{/* <span className="text-gray-700">displayName</span> */}
 				</div>
 			</div>

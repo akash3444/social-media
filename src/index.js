@@ -3,6 +3,8 @@ import ReactDOM from "react-dom";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 import { BrowserRouter } from "react-router-dom";
 
+import "./index.css";
+
 import App from "./App";
 
 const uri = "https://ccz8w.sse.codesandbox.io/";

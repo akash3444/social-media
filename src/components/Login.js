@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { useLazyQuery } from "@apollo/client";
 import { Link, useHistory } from "react-router-dom";
-import { UserContext } from "../App";
 import { LOGIN_USER } from "../queries";
+import { useUserData } from "../hooks/useUserData";
 
 export const Login = () => {
-	const { setUser } = useContext(UserContext);
+	const { setUser } = useUserData();
 	const [userData, setUserData] = useState({
 		username: "",
 		password: "",

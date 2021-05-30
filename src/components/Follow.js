@@ -1,9 +1,12 @@
 import { useMutation } from "@apollo/client";
-import React from "react";
+import React, { useState } from "react";
 import { FOLLOW, UNFOLLOW } from "../queries";
+import { useCountRenders } from "../hooks/useCountRenders";
 
 export const Follow = ({ isFollowing, token, username, GET_USER, data }) => {
-	const [followUser, { loading:followingUser }] = useMutation(FOLLOW, {
+	const [isFollowingUser, setIsFollowingUser] = useState(isFollowing);
+	useCountRenders("FOLLOW")
+	const [followUser, { loading: followingUser }] = useMutation(FOLLOW, {
 		refetchQueries: [
 			{
 				query: GET_USER,
@@ -20,32 +23,34 @@ export const Follow = ({ isFollowing, token, username, GET_USER, data }) => {
 		],
 	});
 
+	const isLoading = followingUser || unfollowingUser;
+
 	console.log(data);
 
 	const handleFollow = () => {
-		!isFollowing
-			? followUser({
-					variables: {
-						token,
-						following: username,
-					},
-			  })
-			: unfollowUser({
-					variables: { token, user: username },
-			  });
+		if (!followingUser && !unfollowingUser) {
+			!isFollowing
+				? followUser({
+						variables: {
+							token,
+							following: username,
+						},
+				  })
+				: unfollowUser({
+						variables: { token, user: username },
+				  });
+		}
+		setIsFollowingUser((currFollowing) => !currFollowing);
 	};
 
 	return (
 		<button
-			className='py-1.5 mt-3 px-4 rounded bg-indigo-600 text-white'
-			onClick={handleFollow}>
-			{followingUser
-				? "Following..."
-				: unfollowingUser
-				? "Unfollowing..."
-				: isFollowing
-				? "Unfollow"
-				: "Follow"}
+			className={`py-1.5 mt-3 px-4 rounded bg-indigo-600 text-white ${
+				isLoading ? "cursor-not-allowed" : null
+			}`}
+			onClick={handleFollow}
+			disabled={isLoading}>
+			{isFollowingUser ? "Unfollow" : "Follow"}
 		</button>
 	);
 };

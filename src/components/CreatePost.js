@@ -1,16 +1,15 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import FileBase from "react-file-base64";
 import { useMutation } from "@apollo/client";
 import { Dialog } from "@headlessui/react";
-import { UserContext } from "../App";
 import { Button } from "../ui/Button";
 import { CREATE_POST } from "../queries";
+import { useUserData } from "../hooks/useUserData";
 
 export const CreatePost = ({ isOpen, setIsOpen }) => {
 	const [image, setImage] = useState("");
 	const [caption, setCaption] = useState("");
-	const userContext = useContext(UserContext);
-	const { token } = userContext.user;
+	const { token } = useUserData();
 	const [createPost, { loading, error }] = useMutation(CREATE_POST);
 	const handleSubmit = (e) => {
 		e.preventDefault();

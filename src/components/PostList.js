@@ -1,14 +1,14 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Post } from "./Post";
 import { useQuery } from "@apollo/client";
-import { UserContext } from "../App";
 import { GET_RELATED_POSTS } from "../queries";
 import { Spinner } from "../ui/Spinner";
+import { useUserData } from '../hooks/useUserData';
 
 export const PostList = () => {
-	const { user } = useContext(UserContext);
+	const {token} = useUserData();
 	const { data, error, loading } = useQuery(GET_RELATED_POSTS, {
-		variables: { token: user.token },
+		variables: { token },
 	});
 	return (
 		<>

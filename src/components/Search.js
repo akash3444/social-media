@@ -1,19 +1,24 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Dialog } from "@headlessui/react";
 import { Spinner } from "../ui/Spinner";
 import { useLazyQuery } from "@apollo/client";
-import { UserContext } from "../App";
 import { useHistory } from "react-router-dom";
 import { Button } from "../ui/Button";
 import { SEARCH_USER } from "../queries";
+import { useUserData } from "../hooks/useUserData";
 
 export const Search = ({ isOpen, setIsOpen }) => {
-	const { user } = useContext(UserContext);
+	const { token } = useUserData();
 	const [searchUser, { data, loading, error }] = useLazyQuery(SEARCH_USER);
 	const history = useHistory();
 	const handleChange = (e) => {
 		e.target.value !== "" &&
-			searchUser({ variables: { token: user?.token, query: e.target.value } });
+			searchUser({ variables: { token: token, query: e.target.value } });
+	};
+
+	const handleClick = (username) => {
+		history.push("/" + username);
+		setIsOpen(false);
 	};
 
 	return (
@@ -44,7 +49,7 @@ export const Search = ({ isOpen, setIsOpen }) => {
 									<div
 										key={user.id}
 										className='cursor-pointer py-2 px-3 border rounded shadow'
-										onClick={() => history.push("/" + user.username)}>
+										onClick={() => handleClick(user.username)}>
 										{user.username}
 									</div>
 								))}
