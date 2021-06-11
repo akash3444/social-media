@@ -5,8 +5,8 @@ export const useUserData = () => {
 	const { user, setUser } = useContext(UserContext);
 
 	return {
-		token: user.token,
-		username: user.user.username,
+		token: user?.token,
+		username: user?.user.username,
 		setUser,
 	};
 };
