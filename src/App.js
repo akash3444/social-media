@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { PostList } from "./components/PostList";
 import { Login } from "./components/Login";
+import { Register } from "./components/Register";
 import { Profile } from "./components/Profile";
 import { Layout } from "./components/Layout";
 
@@ -23,8 +24,14 @@ export default function App() {
 			<Layout>
 				<Switch>
 					<Route path='/' exact component={PostList} />
-					<Route path='/login' exact component={Login} />
+					<Route path='/login' exact component={user ? PostList : Login} />
+					<Route
+						path='/register'
+						exact
+						component={user ? PostList : Register}
+					/>
 					<Route path='/:username' exact component={Profile} />
+					<Route path='/' component={PostList} />
 				</Switch>
 			</Layout>
 		</UserContext.Provider>
