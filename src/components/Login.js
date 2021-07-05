@@ -3,6 +3,8 @@ import { useLazyQuery } from "@apollo/client";
 import { Link, useHistory } from "react-router-dom";
 import { LOGIN_USER } from "../queries";
 import { useUserData } from "../hooks/useUserData";
+import { Button } from "../ui/Button";
+import Input from "../ui/Input";
 
 export const Login = () => {
 	const { setUser } = useUserData();
@@ -47,26 +49,28 @@ export const Login = () => {
 		<div className='h-screen w-full bg-gray-200 grid place-items-center'>
 			<div className='bg-white w-full max-w-md py-12 px-8 rounded-md'>
 				<h2 className='text-3xl font-bold text-center mb-8'>Login</h2>
-				<form className='space-y-8' onSubmit={hanldeSubmit}>
+				<form className='space-y-6' onSubmit={hanldeSubmit}>
 					<div>
-						<label htmlFor='username'>Username</label>
-						<input
+						<label className='text-gray-700' htmlFor='username'>
+							Username
+						</label>
+						<Input
 							type='text'
 							value={userData.username}
 							name='username'
-							className='border border-gray-300 block mt-1 w-full h-10 rounded px-2 transition duration-300 focus:outline-none focus:border-gray-700 focus:shadow-md'
 							onChange={handleChange}
 							autoComplete='off'
 						/>
 					</div>
 
 					<div>
-						<label htmlFor='password'>Password</label>
-						<input
+						<label className='text-gray-700' htmlFor='password'>
+							Password
+						</label>
+						<Input
 							type='password'
 							value={userData.password}
 							name='password'
-							className='border border-gray-300 block mt-1 w-full h-10 rounded px-2 transition duration-300 focus:outline-none focus:border-gray-700 focus:shadow-md'
 							onChange={handleChange}
 						/>
 					</div>
@@ -84,7 +88,7 @@ export const Login = () => {
 									? "Logged in successfully"
 									: "Log In"
 							}
-							className='bg-gray-800 w-full py-3 text-gray-50 rounded transition duration-300 ring-0 focus:ring-4 ring-gray-400 focus:outline-none uppercase text-sm tracking-wider'
+							className='cursor-pointer bg-gray-900 hover:bg-gray-800 w-full py-3 text-gray-50 rounded transition duration-300 ring-0 focus:ring-4 ring-gray-400 focus:outline-none uppercase text-sm tracking-wider'
 						/>
 					</div>
 
@@ -92,11 +96,11 @@ export const Login = () => {
 						<p className='text-gray-700 text-center mb-3'>
 							Don't have an account?
 						</p>
-						<button
-							type='button'
-							className='bg-red-500 w-full py-3 text-gray-50 rounded transition duration-300 ring-0 focus:ring-4 ring-red-300 focus:outline-none uppercase text-sm tracking-wider'>
-							<Link to='/register'> Register </Link>
-						</button>
+						<Link to='/register'>
+							<Button type='button' className='uppercase text-sm'>
+								Register
+							</Button>
+						</Link>
 					</div>
 				</form>
 			</div>
