@@ -1,5 +1,7 @@
 export const Spinner = () => {
 	return (
-		<div className='h-12 w-12 border-2 border-t-0  border-l-0 border-indigo-500 rounded-full animate-spin'></div>
+		<div
+			className='h-8 w-8 border-4 border-indigo-600 rounded-full animate-spin'
+			style={{ borderTopColor: "rgba(79, 70, 229, 0.2)" }}></div>
 	);
 };
