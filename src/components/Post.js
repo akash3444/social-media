@@ -1,12 +1,16 @@
 import React, { useEffect } from "react";
-import { HiOutlineDotsHorizontal } from "react-icons/hi";
-import { BsChat, BsBookmark, BsHeart, BsHeartFill } from "react-icons/bs";
-import { IoShareSocialOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import { LIKE_POST, UNLIKE_POST } from "../queries";
 import { useMutation } from "@apollo/client";
 import { useUserData } from "../hooks/useUserData";
 import { useLikes } from "../hooks/useLikes";
+import { Transition } from "@headlessui/react";
+import OutlineHeart from "./icons/OutlineHeart";
+import FillHeart from "./icons/FillHeart";
+import OutlineHorizontalDots from "./icons/OutlineHorizontalDots";
+import OutlineComment from "./icons/OutlineComment";
+import OutlineShare from "./icons/OutlineShare";
+import OutlineBookmark from "./icons/OutlineBookmark";
 
 export const Post = ({ post }) => {
 	const { likes, isLiked, setLikes, setIsLiked } = useLikes(
@@ -58,7 +62,7 @@ export const Post = ({ post }) => {
 					</h5>
 				</div>
 
-				<HiOutlineDotsHorizontal size={25} />
+				<OutlineHorizontalDots />
 			</div>
 
 			{/* Post Img */}
@@ -71,18 +75,29 @@ export const Post = ({ post }) => {
 				<div className='flex items-center justify-between text-gray-700'>
 					<div className='flex space-x-4'>
 						<div
-							className='cursor-pointer relative top-0.5'
+							className='cursor-pointer '
 							onClick={handleLike}>
-							{isLiked ? (
-								<BsHeartFill size={25} className='text-red-500' />
-							) : (
-								<BsHeart size={25} />
-							)}
+							<Transition
+								show={isLiked}
+								appear={false}
+								enter='transition duration-300 transform'
+								enterFrom='scale-100'
+								enterTo='scale-125'>
+								<FillHeart />
+							</Transition>
+							<Transition
+								show={!isLiked}
+								appear={false}
+								enter='transition duration-200 transform'
+								enterFrom='scale-100'
+								enterTo='scale-125'>
+								<OutlineHeart />
+							</Transition>
 						</div>
-						<BsChat size={25} />
-						<IoShareSocialOutline size={25} />
+						<OutlineComment />
+						<OutlineShare />
 					</div>
-					<BsBookmark size={25} />
+					<OutlineBookmark />
 				</div>
 
 				{/* Likes */}
