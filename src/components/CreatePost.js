@@ -5,6 +5,7 @@ import { Dialog } from "@headlessui/react";
 import { Button } from "../ui/Button";
 import { CREATE_POST } from "../queries";
 import { useUserData } from "../hooks/useUserData";
+import Input from "../ui/Input";
 
 export const CreatePost = ({ isOpen, setIsOpen }) => {
 	const [image, setImage] = useState("");
@@ -33,13 +34,12 @@ export const CreatePost = ({ isOpen, setIsOpen }) => {
 			<div className='w-full grid place-items-center'>
 				<div className='bg-white max-w-sm rounded px-6 w-full'>
 					<form className='flex flex-col space-y-6' onSubmit={handleSubmit}>
-						<input
+						<Input
 							type='text'
 							name='caption'
 							placeholder='Caption'
 							value={caption}
 							onChange={(e) => setCaption(e.target.value)}
-							className='border focus:outline-none focus:ring ring-blue-200 focus:border-blue-500 py-2 px-2 w-full rounded'
 						/>
 						<FileBase
 							multiple={false}

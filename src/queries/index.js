@@ -12,6 +12,14 @@ export const GET_RELATED_POSTS = gql`
 			}
 			likesCount
 			isLiked(token: $token)
+			isBookmarked(token: $token)
+			comments {
+				id
+				text
+				user{
+					username
+				}
+			}
 		}
 	}
 `;
@@ -115,9 +123,33 @@ export const UNLIKE_POST = gql`
 `;
 
 export const GET_POST_LIKES = gql`
-	query getPostLikes($token: String!, $id: String!){
+	query getPostLikes($token: String!, $id: String!) {
 		post(token: $token, id: $id) {
 			likesCount
 		}
 	}
-`
+`;
+export const ADD_BOOKMARK = gql`
+	mutation addBookmark($token: String!, $postId: String!) {
+		addBookmark(token: $token, postId: $postId)
+	}
+`;
+
+export const REMOVE_BOOKMARK = gql`
+	mutation removeBookmark($token: String!, $postId: String!) {
+		removeBookmark(token: $token, postId: $postId)
+	}
+`;
+
+export const GET_BOOKMARKS = gql`
+	query getBookmarks($token: String!) {
+		bookmarks(token: $token) {
+			id
+			user
+			post {
+				image
+				likesCount
+			}
+		}
+	}
+`;

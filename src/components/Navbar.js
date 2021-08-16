@@ -7,7 +7,8 @@ import { Search } from "./Search";
 import FillHome from "./icons/FillHome";
 import OutlineAdd from "./icons/OutlineAdd";
 import OutlineExplore from "./icons/OutlineExplore";
-import OutlineHeart from "./icons/OutlineHeart";
+import ActivityFeed from "./ActivityFeed";
+import ProfilePopover from "./ProfilePopover";
 
 export const Navbar = () => {
 	const history = useHistory();
@@ -29,14 +30,17 @@ export const Navbar = () => {
 						<div className='cursor-pointer' onClick={() => history.push("/")}>
 							{pathname === "/" ? <FillHome /> : <AiOutlineHome size={25} />}
 						</div>
-						<OutlineAdd />
+						<div className='cursor-pointer' onClick={() => setIsOpen(true)}>
+							<OutlineAdd />
+						</div>
 						<OutlineExplore />
-						<OutlineHeart />
+						<ActivityFeed />
 						<IoSearchOutline
 							size={25}
 							className='cursor-pointer'
 							onClick={() => setIsSearchOpen(true)}
 						/>
+						<ProfilePopover />
 					</div>
 				</div>
 			</div>

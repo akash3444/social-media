@@ -7,7 +7,7 @@ export const Sidebar = () => {
 	return (
 		<aside
 			className='hidden lg:block sticky top-14 w-full max-w-xs bg-gray-100 py-14 px-5 flex-1'
-			style={{ height: "calc(100vh - 3.5rem)" }}>
+			style={{ height: "calc(100vh - 3.5rem)", zIndex: -1 }}>
 			{/* User Info */}
 			<div className='flex items-center space-x-5'>
 				<div className='h-16 w-16 bg-gray-300 rounded-full'></div>
