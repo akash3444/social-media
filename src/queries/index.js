@@ -16,7 +16,7 @@ export const GET_RELATED_POSTS = gql`
 			comments {
 				id
 				text
-				user{
+				user {
 					username
 				}
 			}
@@ -132,6 +132,18 @@ export const GET_POST_LIKES = gql`
 export const ADD_BOOKMARK = gql`
 	mutation addBookmark($token: String!, $postId: String!) {
 		addBookmark(token: $token, postId: $postId)
+	}
+`;
+
+export const ADD_COMMENT = gql`
+	mutation addComment($token: String!, $postId: String!, $text: String!) {
+		addComment(token: $token, postId: $postId, text: $text) {
+			id
+			text
+			user {
+				username
+			}
+		}
 	}
 `;
 

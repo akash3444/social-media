@@ -78,7 +78,7 @@ const Footer = ({
 				</div>
 			)}
 
-			<AddComment />
+			<AddComment postId={post.id} />
 		</div>
 	);
 };
