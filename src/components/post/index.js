@@ -25,7 +25,7 @@ export const Post = ({ post }) => {
 	const [addBookmark, { data: addBookmarkResponse }] = useMutation(
 		ADD_BOOKMARK
 	);
-	const [removeBookmark, { data: removeBookmarkResponse }] = useMutation(
+	const [removeBookmark] = useMutation(
 		REMOVE_BOOKMARK
 	);
 

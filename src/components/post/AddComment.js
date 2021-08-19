@@ -9,7 +9,7 @@ const AddComment = ({ postId }) => {
 	// console.log(postId);
 	const { token } = useUserData();
 	const [text, setText] = useState("");
-	const [addComment, { loading, error }] = useMutation(ADD_COMMENT, {
+	const [addComment] = useMutation(ADD_COMMENT, {
 		update(cache, { data }) {
 			const comment = data.addComment;
 			const { posts: allPosts } = cache.readQuery({
