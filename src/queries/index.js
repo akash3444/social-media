@@ -47,6 +47,7 @@ export const GET_USER = gql`
 				posts {
 					id
 					image
+					likesCount
 				}
 			}
 			isFollowing
