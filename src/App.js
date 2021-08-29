@@ -3,7 +3,7 @@ import { Route, Switch, useHistory } from "react-router-dom";
 import { PostList } from "./components/PostList";
 import { Login } from "./components/Login";
 import { Register } from "./components/Register";
-import { Profile } from "./components/Profile";
+import { Profile } from "./components/profile/index";
 import { Layout } from "./components/Layout";
 
 export default function App() {
