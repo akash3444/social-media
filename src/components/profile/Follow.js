@@ -1,11 +1,13 @@
 import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
-import { FOLLOW, UNFOLLOW } from "../../queries";
+import { FOLLOW, UNFOLLOW, CREATE_ACTIVITY } from "../../queries";
 import { useCountRenders } from "../../hooks/useCountRenders";
 
 export const Follow = ({ isFollowing, token, username, GET_USER, data }) => {
 	const [isFollowingUser, setIsFollowingUser] = useState(isFollowing);
 	useCountRenders("FOLLOW")
+
+	const [createActivity, { data: createActivityResponse}] = useMutation(CREATE_ACTIVITY);
 	const [followUser, { loading: followingUser }] = useMutation(FOLLOW, {
 		refetchQueries: [
 			{
@@ -13,6 +15,15 @@ export const Follow = ({ isFollowing, token, username, GET_USER, data }) => {
 				variables: { token, username },
 			},
 		],
+		onCompleted: () => {
+			createActivity({
+				variables: {
+					token,
+					username,
+					text: " started following you."
+				}
+			})
+		}
 	});
 	const [unfollowUser, { loading: unfollowingUser }] = useMutation(UNFOLLOW, {
 		refetchQueries: [
@@ -21,6 +32,15 @@ export const Follow = ({ isFollowing, token, username, GET_USER, data }) => {
 				variables: { token, username },
 			},
 		],
+		onCompleted: () => {
+			createActivity({
+				variables: {
+					token,
+					username,
+					text: " unfollowed you."
+				}
+			})
+		}
 	});
 
 	const isLoading = followingUser || unfollowingUser;

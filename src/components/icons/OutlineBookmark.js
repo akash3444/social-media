@@ -4,7 +4,6 @@ const OutlineBookmark = ({height, width}) => {
 	return (
 		<svg
 			aria-label='Save'
-			class='_8-yf5 '
 			fill='#262626'
 			height={height ? height : '24'}
 			viewBox='0 0 48 48'

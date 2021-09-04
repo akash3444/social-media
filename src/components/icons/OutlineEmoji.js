@@ -4,7 +4,6 @@ const OutlineEmoji = () => {
 	return (
 		<svg
 			aria-label='Emoji'
-			class='_8-yf5 '
 			fill='#262626'
 			height='24'
 			role='img'

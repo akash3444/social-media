@@ -4,7 +4,6 @@ const FillHeart = () => {
 	return (
 		<svg
 			aria-label='Unlike'
-			class='_8-yf5 '
 			fill='#ed4956'
 			height='24'
 			viewBox='0 0 48 48'

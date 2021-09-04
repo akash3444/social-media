@@ -19,7 +19,6 @@ const Footer = ({
 	likes,
 	comments,
 }) => {
-	console.log(comments);
 	return (
 		<div className='pt-4 space-y-2'>
 			<div className='flex items-center justify-between text-gray-700 px-5'>

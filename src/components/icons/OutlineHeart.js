@@ -4,7 +4,6 @@ const OutlineHeart = ({ className }) => {
 	return (
 		<svg
 			aria-label='Activity Feed'
-			class='_8-yf5 '
 			fill='#262626'
 			height='22'
 			viewBox='0 0 48 48'

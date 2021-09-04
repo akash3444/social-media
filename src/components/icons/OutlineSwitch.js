@@ -4,7 +4,6 @@ const OutlineSwitch = () => {
 	return (
 		<svg
 			aria-label='Switch Accounts'
-			class='_8-yf5 '
 			fill='#262626'
 			height='16'
 			role='img'
