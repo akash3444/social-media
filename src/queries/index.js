@@ -48,6 +48,7 @@ export const GET_USER = gql`
 					id
 					image
 					likesCount
+					commentsCount
 				}
 			}
 			isFollowing
@@ -166,3 +167,33 @@ export const GET_BOOKMARKS = gql`
 		}
 	}
 `;
+
+export const GET_ACTIVITY = gql`
+	query GetActivities($token: String!){
+	  activities: getActivities(token: $token){
+	    id
+	    username
+	    user {
+	      username
+	      profilePicture
+	    }
+	    text
+	    createdAt
+	  }
+	}
+`
+
+export const CREATE_ACTIVITY = gql`
+	mutation CreateActivity($token: String!, $username: String!, $text: String!){
+		createActivity(token: $token, username: $username, text: $text) {
+	    userId
+	    username
+	    user {
+	      username
+	    }
+	    text
+	    createdAt
+	  }
+	}
+`
+
