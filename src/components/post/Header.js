@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const PostHeader = ({ author }) => {
 	return (
 		<div className='flex items-center justify-between px-5 py-3 sm:bg-white border'>
-			<div className='flex items-center space-x-3'>
+			<div className='flex items-center space-x-3 select-none'>
 				<img
 					src='https://picsum.photos/100/100'
 					alt='Avatar'
