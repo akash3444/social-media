@@ -1,6 +1,6 @@
 import { useMutation } from "@apollo/client";
 import React, { useState } from "react";
-import { FOLLOW, UNFOLLOW, CREATE_ACTIVITY } from "../../queries";
+import { FOLLOW, UNFOLLOW, CREATE_ACTIVITY, GET_USER } from "../../queries";
 import { useCountRenders } from "../../hooks/useCountRenders";
 
 export const Follow = ({ isFollowing, token, username, GET_USER, data }) => {
@@ -9,12 +9,12 @@ export const Follow = ({ isFollowing, token, username, GET_USER, data }) => {
 
 	const [createActivity, { data: createActivityResponse}] = useMutation(CREATE_ACTIVITY);
 	const [followUser, { loading: followingUser }] = useMutation(FOLLOW, {
-		refetchQueries: [
-			{
-				query: GET_USER,
-				variables: { token, username },
-			},
-		],
+		// refetchQueries: [
+		// 	{
+		// 		query: GET_USER,
+		// 		variables: { token, username },
+		// 	},
+		// ],
 		onCompleted: () => {
 			createActivity({
 				variables: {
@@ -23,15 +23,39 @@ export const Follow = ({ isFollowing, token, username, GET_USER, data }) => {
 					text: " started following you."
 				}
 			})
+		},
+		update: (cache, { data }) => {
+			const { user: userData } = cache.readQuery({
+				query: GET_USER,
+				variables: { token, username }
+			})
+			console.log("USER(FOLLOW)", userData);
+			
+			const updatedUser =  {
+				...userData,
+				user: {
+					...userData.user,
+					followerCount: userData.user.followerCount + 1
+				}
+			}
+
+			cache.writeQuery({
+				query: GET_USER,
+				variables: { token, username },
+				data: {
+					user: updatedUser
+				}
+			})
+			setIsFollowingUser(true);
 		}
 	});
 	const [unfollowUser, { loading: unfollowingUser }] = useMutation(UNFOLLOW, {
-		refetchQueries: [
-			{
-				query: GET_USER,
-				variables: { token, username },
-			},
-		],
+		// refetchQueries: [
+		// 	{
+		// 		query: GET_USER,
+		// 		variables: { token, username },
+		// 	},
+		// ],
 		onCompleted: () => {
 			createActivity({
 				variables: {
@@ -40,6 +64,30 @@ export const Follow = ({ isFollowing, token, username, GET_USER, data }) => {
 					text: " unfollowed you."
 				}
 			})
+		},
+		update: (cache, { data }) => {
+			const { user: userData } = cache.readQuery({
+				query: GET_USER,
+				variables: { token, username }
+			})
+			console.log("USER(FOLLOW)", userData);
+			
+			const updatedUser =  {
+				...userData,
+				user: {
+					...userData.user,
+					followerCount: userData.user.followerCount - 1
+				}
+			}
+
+			cache.writeQuery({
+				query: GET_USER,
+				variables: { token, username },
+				data: {
+					user: updatedUser
+				}
+			});
+			setIsFollowingUser(false);
 		}
 	});
 
@@ -48,8 +96,9 @@ export const Follow = ({ isFollowing, token, username, GET_USER, data }) => {
 	console.log(data);
 
 	const handleFollow = () => {
+		console.log("IS FOLLOWING", isFollowing)
 		if (!followingUser && !unfollowingUser) {
-			!isFollowing
+			!isFollowingUser
 				? followUser({
 						variables: {
 							token,
@@ -60,13 +109,12 @@ export const Follow = ({ isFollowing, token, username, GET_USER, data }) => {
 						variables: { token, user: username },
 				  });
 		}
-		setIsFollowingUser((currFollowing) => !currFollowing);
 	};
 
 	return (
 		<button
-			className={`py-1.5 mt-3 px-4 rounded bg-indigo-600 text-white ${
-				isLoading ? "cursor-not-allowed" : null
+			className={`py-1.5 mt-3 px-4 rounded text-white ${
+				isLoading ? "cursor-not-allowed bg-indigo-400" : 'bg-indigo-600'
 			}`}
 			onClick={handleFollow}
 			disabled={isLoading}>

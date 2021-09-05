@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef } from "react";
 import {
 	LIKE_POST,
 	UNLIKE_POST,
@@ -7,21 +7,18 @@ import {
 } from "../../queries";
 import { useMutation } from "@apollo/client";
 import { useUserData } from "../../hooks/useUserData";
-import { useLikes } from "../../hooks/useLikes";
 import PostHeader from "./Header";
 import PostBody from "./Body";
 import PostFooter from "./Footer";
 
 export const Post = ({ post }) => {
+	// console.log("POST", post)
+	const likes = useRef(post.likesCount)
+	const isLiked = useRef(post.isLiked);
 	const [isBookmarked, setIsBookmarked] = useState(post.isBookmarked);
-	const { likes, isLiked, setLikes, setIsLiked } = useLikes(
-		post.id,
-		post.likesCount,
-		post.isLiked
-	);
 	const { token } = useUserData();
-	const [likePost, { data: likePostResponse }] = useMutation(LIKE_POST);
-	const [unlikePost, { data: unlikePostResponse }] = useMutation(UNLIKE_POST);
+	const [likePost] = useMutation(LIKE_POST);
+	const [unlikePost] = useMutation(UNLIKE_POST);
 	const [addBookmark, { data: addBookmarkResponse }] = useMutation(
 		ADD_BOOKMARK
 	);
@@ -36,7 +33,7 @@ export const Post = ({ post }) => {
 
 	console.log(addBookmarkResponse);
 
-	const handleClick = () => {
+	const handleBookmark = () => {
 		console.log("isBookmarked", isBookmarked);
 		!isBookmarked
 			? addBookmark({
@@ -48,31 +45,23 @@ export const Post = ({ post }) => {
 		setIsBookmarked((curr) => !curr);
 	};
 
-	useEffect(() => {
-		if (likePostResponse && likePostResponse !== "undefined")
-			localStorage.setItem(
-				post.id,
-				JSON.stringify({ likes: likePostResponse.likePost, isLiked })
-			);
-		if (unlikePostResponse && unlikePostResponse !== "undefined")
-			localStorage.setItem(
-				post.id,
-				JSON.stringify({ likes: unlikePostResponse.unlikePost, isLiked })
-			);
-	}, [post.id, likePostResponse, unlikePostResponse, isLiked]);
-
 	const likeMutationVariables = {
 		variables: {
 			token,
 			postId: post.id,
 		},
 	};
+
 	const handleLike = () => {
-		isLiked
-			? unlikePost(likeMutationVariables)
-			: likePost(likeMutationVariables);
-		setLikes((currLikes) => (isLiked ? --currLikes : ++currLikes));
-		setIsLiked((curr) => !curr);
+		if(isLiked.current) {
+			unlikePost(likeMutationVariables);
+			likes.current -= 1;
+			isLiked.current = false;
+		} else {
+			likePost(likeMutationVariables);
+			likes.current += 1;
+			isLiked.current = true;
+		}
 	};
 
 	return (
@@ -85,12 +74,12 @@ export const Post = ({ post }) => {
 
 			{/* Post Footer */}
 			<PostFooter
-				isLiked={isLiked}
+				isLiked={isLiked.current}
 				isBookmarked={isBookmarked}
-				handleClick={handleClick}
+				handleClick={handleBookmark}
 				handleLike={handleLike}
 				post={post}
-				likes={likes}
+				likes={likes.current}
 				comments={post.comments}
 			/>
 		</div>
