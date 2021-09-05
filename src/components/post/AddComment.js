@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
-import OutlineEmoji from "../icons/OutlineEmoji";
 import { useMutation } from "@apollo/client";
 import { ADD_COMMENT, GET_RELATED_POSTS } from "../../queries";
 import { useUserData } from "../../hooks/useUserData";
+import EmojiPicker from './EmojiPicker';
 
 const AddComment = ({ postId }) => {
 	// console.log(postId);
 	const { token } = useUserData();
+	const inputRef = useRef("");
 	const [text, setText] = useState("");
 	const [addComment] = useMutation(ADD_COMMENT, {
 		update(cache, { data }) {
@@ -60,11 +61,13 @@ const AddComment = ({ postId }) => {
 				fontFamily:
 					'-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif',
 			}}>
-			<OutlineEmoji />
+			{/*<OutlineEmoji />*/}
+			<EmojiPicker inputRef={inputRef} text={text} setText={setText}/>
 			<input
 				type='text'
 				placeholder='Add a comment...'
 				name='comment'
+				ref={inputRef}
 				value={text}
 				onChange={(e) => setText(e.target.value)}
 				className='mx-3 font-normal text-md focus:outline-none flex-1'
