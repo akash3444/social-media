@@ -7,7 +7,7 @@ import "./index.css";
 
 import App from "./App";
 
-const uri = "https://ccz8w.sse.codesandbox.io/";
+const uri = "https://social-media-3444.herokuapp.com/"; //https://ccz8w.sse.codesandbox.io/
 const cache = new InMemoryCache();
 
 const client = new ApolloClient({ uri, cache });
